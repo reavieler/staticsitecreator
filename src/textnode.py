@@ -227,14 +227,3 @@ def markdown_to_html_node(markdown):
         block_type = block_to_block_type(new_block)
         children.extend(from_mdBlock_to_HTMLNode(new_block, block_type))
     return ParentNode("div", None,children).to_html()
-
-
-    markdown ="""This is a **bolded** paragraph     
-
-This is another paragraph with *italic* text and `code` here
-This is the same paragraph on a new line
-
-```This is a block of code and this is a block of code still```
-
-1. This is a list
-2. with items"""
