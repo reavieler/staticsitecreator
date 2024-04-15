@@ -1,6 +1,16 @@
 from textnode import *
 from htmlnode import *
 import re
+import os
+import shutil
+
+def copy_static():
+    paths = []
+    test = os.listdir('static')
+    print(test)
+
+
+
 
 
 def main():
@@ -35,19 +45,19 @@ def main():
     # test = text_to_textnodes(treated_text_to_parse)
     # print(test)
 
-    markdown ="""This is a **bolded** paragraph     
+#     markdown ="""This is a **bolded** paragraph     
 
-This is another paragraph with *italic* text and `code` here
-This is the same paragraph on a new line
+# This is another paragraph with *italic* text and `code` here
+# This is the same paragraph on a new line
 
-```This is a block of code and this is a block of code still```
+# ```This is a block of code and this is a block of code still```
 
-- This is a list
-- This is still a list"""
-    #markdown = """```This is a block of code and this is a block of code still```"""
-    # print(markdown)
-    # print(markdown_to_html_node(markdown))
-    print(markdown_to_html_node(markdown))
+# - This is a list
+# - This is still a list"""
+#     #markdown = """```This is a block of code and this is a block of code still```"""
+#     # print(markdown)
+#     # print(markdown_to_html_node(markdown))
+#     print(markdown_to_html_node(markdown))
     # block_list = markdown_to_blocks(markdown_document)
     # for block in block_list:
 
@@ -56,7 +66,7 @@ This is the same paragraph on a new line
     #         heading_leaf_node = heading_to_html_node(block)
     #         print(heading_leaf_node)
 
-
+    copy_static()
     
 
 
