@@ -40,12 +40,13 @@ def main():
 This is another paragraph with *italic* text and `code` here
 This is the same paragraph on a new line
 
-```This is a block of code
-and this is a block of code still```
-     
-1. This is a list
-2. with items"""
-    print(markdown)
+```This is a block of code and this is a block of code still```
+
+- This is a list
+- This is still a list"""
+    #markdown = """```This is a block of code and this is a block of code still```"""
+    # print(markdown)
+    # print(markdown_to_html_node(markdown))
     print(markdown_to_html_node(markdown))
     # block_list = markdown_to_blocks(markdown_document)
     # for block in block_list:

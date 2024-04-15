@@ -40,10 +40,12 @@ def split_nodes_delimiter(old_nodes, delimiter, texttype):
             if node.text.count(delimiter) % 2 != 0:# or node.text.count(delimiter) == 0:
                 raise ValueError("Invalid Markdown syntax! Every delimiter should be accompanied by a closing delimiter.")
             node_split_by_delimiter = node.text.split(delimiter)
+            print(node_split_by_delimiter)
             for i in range(len(node_split_by_delimiter)):
-                if i % 2 == 0:
+                print(node_split_by_delimiter[i])
+                if i % 2 == 0 and node_split_by_delimiter[i] != '':
                     nodesoutput.append(TextNode(unescape_special_characters(node_split_by_delimiter[i]), text_type_text))
-                else:
+                elif node_split_by_delimiter[i] != '':
                     nodesoutput.append(TextNode(unescape_special_characters(node_split_by_delimiter[i]), texttype))
 
     return nodesoutput
@@ -114,10 +116,10 @@ def text_to_textnodes(text):
 
     #Apply italic treatment    
     master_node_list = apply_changes_to_textnodes(master_node_list, split_nodes_delimiter, '*', text_type_italic)
-
+    
     #Apply code treatment
     master_node_list = apply_changes_to_textnodes(master_node_list, split_nodes_delimiter, '`', text_type_code)
-
+    
     #Aply image treatment
     master_node_list = apply_changes_to_textnodes(master_node_list, split_nodes_image)
 
@@ -212,6 +214,7 @@ def from_mdBlock_to_HTMLNode(md_block, block_type):
 def markdown_to_html_node(markdown):
     children = []
     block_list = markdown_to_blocks(markdown)
+    #print(block_list)
     inline_leaf_nodes = []
     leaf_nodes_to_html = ""
     for block in block_list:
@@ -219,7 +222,6 @@ def markdown_to_html_node(markdown):
         text_nodes = text_to_textnodes(block_escaped)
         inline_leaf_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
         leaf_nodes_to_html += ''.join(leaf_node.to_html() for leaf_node in inline_leaf_nodes) +"\n\n"
-
     new_blocks = markdown_to_blocks(leaf_nodes_to_html)
     for new_block in new_blocks:
         block_type = block_to_block_type(new_block)
@@ -227,3 +229,12 @@ def markdown_to_html_node(markdown):
     return ParentNode("div", None,children).to_html()
 
 
+    markdown ="""This is a **bolded** paragraph     
+
+This is another paragraph with *italic* text and `code` here
+This is the same paragraph on a new line
+
+```This is a block of code and this is a block of code still```
+
+1. This is a list
+2. with items"""
