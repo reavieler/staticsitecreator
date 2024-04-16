@@ -4,11 +4,54 @@ import re
 import os
 import shutil
 
-def copy_static():
-    paths = []
-    test = os.listdir('static')
-    print(test)
+def extract_title(markdown):
+    markdown_lines = markdown.split('\n')
+    if markdown_lines[0].startswith('# ') == False:
+        raise Exception('All pages need a single h1 header.')
+    return markdown_lines[0]
 
+def generate_page(from_path, template_path, dest_path):
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}...")
+    with open(from_path) as markdown_file:
+        markdown_content = markdown_file.read()
+    with open(template_path) as template_file:
+        template_html = template_file.read()
+    page_title = extract_title(markdown_content)
+    html_content = markdown_to_html_node(markdown_content)
+    final_html = template_html.replace('{{ Title }}',page_title).replace('{{ Content }}',html_content)
+    with open(dest_path, "w") as html_dest:
+        html_dest.write(final_html)
+    print("All done!")
+    return
+
+def clear_public_folder(folder_path):
+    if not os.path.isdir(folder_path):
+        return
+    for item in os.listdir(folder_path):
+        item_path = os.path.join(folder_path, item)
+        if os.path.isfile(item_path):
+            print(f"Removing {item_path}...")
+            os.remove(item_path)
+        elif os.path.isdir(item_path):
+            clear_public_folder(item_path)
+    if folder_path != 'public':
+        print(f"Removing {folder_path}...")
+        os.rmdir(folder_path)
+            
+def copy_directory_contents(source, destination):
+    if not os.path.isdir(destination):
+        print(f"Destination does not exist! Creating {destination}...")
+        os.mkdir(destination)
+    for item in os.listdir(source):
+        item_source = os.path.join(source, item)
+        item_destination = os.path.join(destination, item)
+        if os.path.isdir(item_source):
+            print(f"Creating {item_destination}...")
+            os.mkdir(item_destination)
+            copy_directory_contents(item_source, item_destination)
+        else:
+            print(f"Creating {item_destination}...")
+            shutil.copy(item_source, item_destination)
 
 
 
@@ -66,7 +109,10 @@ def main():
     #         heading_leaf_node = heading_to_html_node(block)
     #         print(heading_leaf_node)
 
-    copy_static()
+
+    clear_public_folder("public")
+    copy_directory_contents("static", "public")
+    generate_page("content/index.md","template.html","public/index.html")
     
 
 

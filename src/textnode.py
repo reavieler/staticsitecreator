@@ -40,9 +40,7 @@ def split_nodes_delimiter(old_nodes, delimiter, texttype):
             if node.text.count(delimiter) % 2 != 0:# or node.text.count(delimiter) == 0:
                 raise ValueError("Invalid Markdown syntax! Every delimiter should be accompanied by a closing delimiter.")
             node_split_by_delimiter = node.text.split(delimiter)
-            print(node_split_by_delimiter)
             for i in range(len(node_split_by_delimiter)):
-                print(node_split_by_delimiter[i])
                 if i % 2 == 0 and node_split_by_delimiter[i] != '':
                     nodesoutput.append(TextNode(unescape_special_characters(node_split_by_delimiter[i]), text_type_text))
                 elif node_split_by_delimiter[i] != '':
@@ -214,7 +212,6 @@ def from_mdBlock_to_HTMLNode(md_block, block_type):
 def markdown_to_html_node(markdown):
     children = []
     block_list = markdown_to_blocks(markdown)
-    #print(block_list)
     inline_leaf_nodes = []
     leaf_nodes_to_html = ""
     for block in block_list:
