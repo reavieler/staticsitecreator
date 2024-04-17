@@ -24,6 +24,17 @@ def generate_page(from_path, template_path, dest_path):
     print("All done!")
     return
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    for item in os.listdir(dir_path_content):
+        item_source = os.path.join(dir_path_content, item)
+        if os.path.isfile(item_source) and item_source.endswith('.md'):
+            item_destination = os.path.join(dest_dir_path, item).replace('.md','.html')
+            generate_page(item_source, template_path, item_destination)
+        elif os.path.isdir(item_source):
+            item_destination = os.path.join(dest_dir_path, item)
+            os.mkdir(item_destination)
+            generate_pages_recursive(item_source, template_path, item_destination)
+
 def clear_public_folder(folder_path):
     if not os.path.isdir(folder_path):
         return
@@ -112,7 +123,7 @@ def main():
 
     clear_public_folder("public")
     copy_directory_contents("static", "public")
-    generate_page("content/index.md","template.html","public/index.html")
+    generate_pages_recursive("content","template.html","public")
     
 
 

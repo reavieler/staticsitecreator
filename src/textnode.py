@@ -78,7 +78,7 @@ def split_nodes_link(old_nodes):
             modified_text = original_text.split(f"[{link_tup[0]}]({link_tup[1]})")
             first_node = modified_text[0]
             nodesoutput.append(TextNode(unescape_special_characters(first_node),text_type_text))
-            nodesoutput.append(TextNode(unescape_special_characters(link_tup[0]),text_type_image,link_tup[1]))
+            nodesoutput.append(TextNode(unescape_special_characters(link_tup[0]),text_type_link,link_tup[1]))
             original_text = modified_text[1]
         nodesoutput.append(TextNode(unescape_special_characters(original_text),text_type_text))
     return nodesoutput
@@ -118,12 +118,11 @@ def text_to_textnodes(text):
     #Apply code treatment
     master_node_list = apply_changes_to_textnodes(master_node_list, split_nodes_delimiter, '`', text_type_code)
     
-    #Aply image treatment
+    #Apply image treatment
     master_node_list = apply_changes_to_textnodes(master_node_list, split_nodes_image)
 
-    #Aply link treatment
+    #Apply link treatment
     master_node_list = apply_changes_to_textnodes(master_node_list, split_nodes_link)
-
     return master_node_list
 
 
